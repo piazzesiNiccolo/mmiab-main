@@ -4,17 +4,17 @@ This is the main repository of Message in a Bottle application, self project of 
 
 ## Team info
 
-- The *squad id* is **<squad_id>**
-- The *team leader* is <team_leader>
+- The *squad id* is **6**
+- The *team leader* is Lorenzo Volpi
 
 #### Members
 
 | Name and Surname | Email |
 | ---------------- | ----- |
-|                  |       |
-|                  |       |
-|                  |       |
-|                  |       |
+| Lorenzo Volpi    |       |
+| Niccolò Piazzesi |       |
+| Davide Morucci   |       |
+| Paolo Lanza      |       |
 |                  |       |
 
 ## Instructions
