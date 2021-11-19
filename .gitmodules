@@ -1,0 +1,6 @@
+[submodule "mmiab-api-gateway"]
+	path = mmiab-api-gateway
+	url = git@github.com:Team6ASE2021/mmiab-api-gateway.git
+[submodule "mmiab-user"]
+	path = mmiab-user
+	url = git@github.com:Team6ASE2021/mmiab-user.git
