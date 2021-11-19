@@ -25,7 +25,7 @@ services:
     #
     container_name: load_balancer_orchestrator
     restart: always
-    build: ./mib-api-gateway/nginx-orchestrator
+    build: ./mmiab-api-gateway/nginx-orchestrator
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # WARNING: with Winzozz it does not work, but we need it!
       - nginx_conf:/etc/nginx/conf.d
@@ -36,7 +36,7 @@ services:
     #
     container_name: load_balancer
     restart: always
-    build: ./mib-api-gateway/nginx
+    build: ./mmiab-api-gateway/nginx
     labels:
       - mib.nginx_lb
     volumes:
@@ -54,7 +54,7 @@ services:
     # to allow the replication.
     #
     restart: always
-    build: ./mib-api-gateway
+    build: ./mmiab-api-gateway
     volumes:
       - static_contents:/static
     env_file:
@@ -95,7 +95,7 @@ services:
     #
     # Users Microservice Migrations
     #
-    build: ./mib-user
+    build: ./mmiab-user
     env_file:
       - users_ms.conf
     environment:
@@ -110,7 +110,7 @@ services:
     #
     # Users Microservice Worker node
     #
-    build: ./mib-user
+    build: ./mmiab-user
     restart: on-failure
     env_file:
       - users_ms.conf
