@@ -41,7 +41,7 @@ services:
       - mib.nginx_lb
     volumes:
       - nginx_conf:/etc/nginx/conf.d
-      - static_contents:/static
+      - ./mmiab-api-gateway/mib/static:/static
     ports:
       - "80:80"
 
@@ -56,7 +56,7 @@ services:
     restart: always
     build: ./mmiab-api-gateway
     volumes:
-      - static_contents:/static
+      - ./mmiab-api-gateway/mib/static:/static
       - ./mmiab-api-gateway:/app
     env_file:
       - gateway.conf
