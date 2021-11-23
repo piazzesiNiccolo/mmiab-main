@@ -13,12 +13,12 @@ List of endpoints of the API with a brief description
 | ------------------------------------------- | ------------------- | :-: | -------- |
 | /login                                      | /login                 | ? | Logs the user in |
 | /logout                                     | /logout                | ? | Logs the user out |
-| /create_user                                | /user/{type_}          | / | Lets the user to create a new account |
+| /create_user                                | /create_user           | / | Lets the user to create a new account |
 | /user/profile                               | /profile               |   | Shows the user profile of the logged user |
-| /user/profile/edit                          | /user/{id} [PUT]       | ? | Lets the user edit his own profile |
-| /users/{id}                                 | /user/{id} [GET]       | y | Shows the user profile of any user |
+| /user/profile/edit                          | /profile/edit          | ? | Lets the user edit his own profile |
+| /users/{id}                                 | /user/{id}             | y | Shows the user profile of any user |
 | /user_list                                  | /users                 | y | Shows a list of users |
-| /user/delete                                | /user/{id} [DELETE]    | ? | Lets the user delete his own account |
+| /user/delete                                | /user/delete           | ? | Lets the user delete his own account |
 | /user/content_filter                        | /content_filter        |   | Lets the user toggle the content filter option |
 | /user/report/{id}                           | /report/{id}           |   | Lets the user report another user |
 | /user/blacklist                             | /blacklist             |   | Shows the list of blacklisted users by the logged user |
