@@ -13,17 +13,17 @@ List of endpoints of the API with a brief description
 | ------------------------------------------- | ------------------- | :-: | -------- |
 | /login                                      | /login                 | ? | Logs the user in |
 | /logout                                     | /logout                | ? | Logs the user out |
-| /create_user                                | /create_user           | / | Lets the user to create a new account |
-| /user/profile                               | /profile               |   | Shows the user profile of the logged user |
+| /create_user                                | /create_user           | y | Lets the user to create a new account |
+| /user/profile                               | /profile               | y | Shows the user profile of the logged user |
 | /user/profile/edit                          | /profile/edit          | ? | Lets the user edit his own profile |
 | /users/{id}                                 | /user/{id}             | y | Shows the user profile of any user |
 | /user_list                                  | /users                 | y | Shows a list of users |
 | /user/delete                                | /user/delete           | ? | Lets the user delete his own account |
 | /user/content_filter                        | /content_filter        |   | Lets the user toggle the content filter option |
 | /user/report/{id}                           | /report/{id}           |   | Lets the user report another user |
-| /user/blacklist                             | /blacklist             |   | Shows the list of blacklisted users by the logged user |
-| /user/blacklist/add/{id}                    | /blacklist/add/{id}    |   | Lets the user add a new user to the blacklist |
-| /user/blacklist/remove/{id}                 | /blacklist/remove/{id} |   | Lets the user remove a user from the blacklist |
+| /user/blacklist                             | /blacklist             | y | Shows the list of blacklisted users by the logged user |
+| /user/blacklist/add/{id}                    | /blacklist/{id}/add    | y | Lets the user add a new user to the blacklist |
+| /user/blacklist/remove/{id}                 | /blacklist/{id}/remove | y | Lets the user remove a user from the blacklist |
 
 ### Notification
 | monolith                                    | mmiab               | Status | Description |
