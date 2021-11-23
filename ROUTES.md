@@ -5,12 +5,12 @@ List of endpoints of the API with a brief description
 
 ### Home
 | monolith                                    | mmiab               | Status | Description |
-| ------------------------------------------- | ------------------- | - | -------- |
+| ------------------------------------------- | ------------------- | :-: | -------- |
 | /                                           | /                   | ? | Home endpoint |
 
 ### User
 | monolith                                    | mmiab               | Status | Description |
-| ------------------------------------------- | ------------------- | - | -------- |
+| ------------------------------------------- | ------------------- | :-: | -------- |
 | /login                                      | /login                 | ? | Logs the user in |
 | /logout                                     | /logout                | ? | Logs the user out |
 | /create_user                                | /user/{type_}          | / | Lets the user to create a new account |
@@ -27,12 +27,12 @@ List of endpoints of the API with a brief description
 
 ### Notification
 | monolith                                    | mmiab               | Status | Description |
-| ------------------------------------------- | ------------------- | - | -------- |
+| ------------------------------------------- | ------------------- | :-: | -------- |
 | /notification                               |                     |   | Returns a JSON with all the notifications for the user |
 
 ### Message
 | monolith                                    | mmiab               | Status | Description |
-| ------------------------------------------- | ------------------- | - | -------- |
+| ------------------------------------------- | ------------------- | :-: | -------- |
 | /draft                                      |                     |   | Creates a new message as draft |
 | /draft/edit/{id}                            |                     |   | Edits a draft |
 | /send_message/{id}                          |                     |   | Sends a message |
@@ -53,13 +53,13 @@ List of endpoints of the API with a brief description
 
 ### Lottery
 | monolith                                    | mmiab               | Status | Description |
-| ------------------------------------------- | ------------------- | - | -------- |
+| ------------------------------------------- | ------------------- | :-: | -------- |
 | /lottery/participate                        |                     |   | Lets the user participate to the lottery |
 | /lottery                                    |                     |   | Shows the current status of the lottery to the user |
 
 #### Legend
 | Symbol | Description |
-| ------ | ----------- |
+| :----: | ----------- |
 | y      | Completed   |
 | /      | Almost completed, small edits required | 
 | ?      | Not completed, to edit |
