@@ -4,3 +4,6 @@
 [submodule "mmiab-user"]
 	path = mmiab-user
 	url = git@github.com:Team6ASE2021/mmiab-user.git
+[submodule "mmiab-notification"]
+	path = mmiab-notification
+	url = git@github.com:Team6ASE2021/mmiab-notification.git
