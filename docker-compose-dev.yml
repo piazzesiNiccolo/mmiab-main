@@ -92,6 +92,21 @@ services:
     environment:
       - FLASK_ENV=development
   
+  # -------------------------------------------- #
+  # Notification Microservice                    #
+  # -------------------------------------------- #
+  notifications_ms_worker:
+    #
+    # Users Microservice Worker node
+    #
+    build: ./mmiab-notification
+    restart: on-failure
+    volumes:
+      - ./mmiab-notification:/app
+    env_file:
+      - notifications_ms.conf
+    environment:
+      - FLASK_ENV=development
   #
   # Specify here your microservices
   # separating services by: db_service, migration_service, worker_service
