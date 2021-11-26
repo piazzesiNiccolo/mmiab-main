@@ -7,3 +7,9 @@
 [submodule "mmiab-notification"]
 	path = mmiab-notification
 	url = git@github.com:Team6ASE2021/mmiab-notification.git
+[submodule "mmiab-lottery"]
+	path = mmiab-lottery
+	url = git@github.com:Team6ASE2021/mmiab-lottery.git
+[submodule "mmiab-message"]
+	path = mmiab-message
+	url = git@github.com:Team6ASE2021/mmiab-message.git
