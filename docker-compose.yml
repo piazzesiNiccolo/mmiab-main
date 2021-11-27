@@ -62,7 +62,7 @@ services:
     environment:
       - USERS_MS_HOST=users_ms_worker
       - NOTIFICATIONS_MS_HOST=notifications_ms_worker
-      # - LOTTERY_MS_HOST=lottery_ms_worker
+      - LOTTERY_MS_HOST=lottery_ms_worker
       # - MESSAGE_MS_HOST=message_ms_worker
     labels:
       - mib.api_gateway_worker
@@ -142,16 +142,16 @@ services:
   # -------------------------------------------- #
   # Lottery Microservice                    #
   # -------------------------------------------- #
-  # lottery_ms_worker:
-  #   #
-  #   # Users Microservice Worker node
-  #   #
-  #   build: ./mmiab-lottery
-  #   restart: on-failure
-  #   env_file:
-  #     - lottery_ms.conf
-  #   environment:
-  #     - FLASK_ENV=development
+  lottery_ms_worker:
+     #
+     # Users Microservice Worker node
+     #
+     build: ./mmiab-lottery
+     restart: on-failure
+     env_file:
+       - lottery_ms.conf
+     environment:
+       - FLASK_ENV=development
 
   # -------------------------------------------- #
   # Message Microservice                    #
