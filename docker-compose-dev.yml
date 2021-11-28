@@ -89,6 +89,7 @@ services:
     build: ./mmiab-user
     restart: on-failure
     volumes:
+      - ./mmiab-user/mib/static:/static
       - ./mmiab-user:/app
     env_file:
       - users_ms.conf
