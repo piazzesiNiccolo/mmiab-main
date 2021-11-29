@@ -31,25 +31,25 @@ List of endpoints of the API with a brief description
 | /notification                               |                     |   | Returns a JSON with all the notifications for the user |
 
 ### Message
-| monolith                                    | mmiab               | Status | Description |
-| ------------------------------------------- | ------------------- | :-: | -------- |
-| /draft                                      |                     |   | Creates a new message as draft |
-| /draft/edit/{id}                            |                     |   | Edits a draft |
-| /send_message/{id}                          |                     |   | Sends a message |
-| /message/{id}/delete                        |                     |   | Lets a recipient delete a read message |
-| /draft/{id}/delete                          |                     |   | Lets the creator of a draft delete it |
-| /message/{id}/withdraw                      |                     |   | Lets a user withdraw a sent message |
-| /message/{id}/reply                         |                     |   | Lets a recipient reply to a received message |
-| /forwarding/{id}                            |                     |   | Lets a user forward a sent or received message |
-| /recipients                                 |                     |   | Returns a JSON with all available recipients for the current user |
-| /timeline                                   |                     |   | Shows the timeline moth view for the current month |
-| /timeline/day/{year}/{month}/{day}/sent     |                     |   | Shows the timeline day view of sent messages for a specific day |
-| /timeline/day/{year}/{month}/{day}/received |                     |   | Shows the timeline day view of received messages for a specific day |
-| /timeline/month/{year}/{month}              |                     |   | Shows the timeline moth view for a specific month |
-| /read_message/{id}                          |                     |   | Lets an entitled user to read a specific message |
-| /message/list/sent                          |                     |   | Shows the list of sent messages |
-| /message/list/received                      |                     |   | Shows the list of received messages |
-| /message/list/draft                         |                     |   | Shows the list of drafts |
+| monolith                                    | mmiab                                       | Status | Description |
+| ------------------------------------------- | ------------------------------------------- | :-: | -------- |
+| /draft                                      | /draft                                      |   | Creates a new message as draft |
+| /draft/edit/{id}                            | /draft/{id}/edit                            |   | Edits a draft |
+| /send_message/{id}                          | /message/{id}/send                          |   | Sends a message |
+| /message/{id}/delete                        | /message/{id}/delete                        |   | Lets a recipient delete a read message |
+| /draft/{id}/delete                          | /draft/{id}/delete                          |   | Lets the creator of a draft delete it |
+| /message/{id}/withdraw                      | /message/{id}/withdraw                      |   | Lets a user withdraw a sent message |
+| /message/{id}/reply                         | /message/{id}/reply                         |   | Lets a recipient reply to a received message |
+| /forwarding/{id}                            | /message/{id}/forwarding                    |   | Lets a user forward a sent or received message |
+| /recipients                                 | /timeline                                   |   | Returns a JSON with all available recipients for the current user |
+| /timeline                                   | /timeline/day/{year}/{month}/{day}/sent     |   | Shows the timeline moth view for the current month |
+| /timeline/day/{year}/{month}/{day}/sent     | /timeline/day/{year}/{month}/{day}/received |   | Shows the timeline day view of sent messages for a specific day |
+| /timeline/day/{year}/{month}/{day}/received | /timeline/month/{year}/{month}              |   | Shows the timeline day view of received messages for a specific day |
+| /timeline/month/{year}/{month}              | /timeline/month/{year}/{month}              |   | Shows the timeline moth view for a specific month |
+| /read_message/{id}                          | /message/{id}/read                          |   | Lets an entitled user to read a specific message |
+| /message/list/sent                          | /message/list/sent                          |   | Shows the list of sent messages |
+| /message/list/received                      | /message/list/received                      |   | Shows the list of received messages |
+| /message/list/draft                         | /message/list/draft                         |   | Shows the list of drafts |
 
 ### Lottery
 | monolith                                    | mmiab               | Status | Description |
