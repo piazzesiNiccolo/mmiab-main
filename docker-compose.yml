@@ -63,7 +63,7 @@ services:
       - USERS_MS_HOST=users_ms_worker
       - NOTIFICATIONS_MS_HOST=notifications_ms_worker
       - LOTTERY_MS_HOST=lottery_ms_worker
-      # - MESSAGE_MS_HOST=message_ms_worker
+    # - MESSAGE_MS_HOST=message_ms_worker
     labels:
       - mib.api_gateway_worker
 
@@ -151,6 +151,7 @@ services:
      env_file:
        - lottery_ms.conf
      environment:
+     # - USERS_MS_HOST=users_ms_worker
        - FLASK_ENV=development
 
   # -------------------------------------------- #
@@ -165,6 +166,8 @@ services:
   #   env_file:
   #     - message_ms.conf
   #   environment:
+  #     - USERS_MS_HOST=users_ms_worker
+  #     - NOTIFICATIONS_MS_HOST=notifications_ms_worker
   #     - FLASK_ENV=development
 
   #
