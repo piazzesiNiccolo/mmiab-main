@@ -15,7 +15,7 @@ List of endpoints of the API with a brief description
 | /logout                                     | /logout                | ? | Logs the user out |
 | /create_user                                | /create_user           | y | Lets the user to create a new account |
 | /user/profile                               | /profile               | y | Shows the user profile of the logged user |
-| /user/profile/edit                          | /profile/edit          | / | Lets the user edit his own profile |
+| /user/profile/edit                          | /profile/edit          | y | Lets the user edit his own profile |
 | /users/{id}                                 | /user/{id}             | y | Shows the user profile of any user |
 | /user_list                                  | /users                 | y | Shows a list of users |
 | /user/delete                                | /user/delete           | y | Lets the user delete his own account |
@@ -24,6 +24,7 @@ List of endpoints of the API with a brief description
 | /user/blacklist                             | /blacklist             | y | Shows the list of blacklisted users by the logged user |
 | /user/blacklist/add/{id}                    | /blacklist/{id}/add    | y | Lets the user add a new user to the blacklist |
 | /user/blacklist/remove/{id}                 | /blacklist/{id}/remove | y | Lets the user remove a user from the blacklist |
+| /recipients                                 | /recipients            | m | Returns a JSON with all available recipients for the current user |
 
 ### Notification
 | monolith                                    | mmiab               | Status | Description |
@@ -32,24 +33,23 @@ List of endpoints of the API with a brief description
 
 ### Message
 | monolith                                    | mmiab                                       | Status | Description |
-| ------------------------------------------- | ------------------------------------------- | :-: | -------- |
-| /draft                                      | /draft                                      |   | Creates a new message as draft |
-| /draft/edit/{id}                            | /draft/{id}/edit                            |   | Edits a draft |
-| /send_message/{id}                          | /message/{id}/send                          |   | Sends a message |
-| /message/{id}/delete                        | /message/{id}/delete                        |   | Lets a recipient delete a read message |
-| /draft/{id}/delete                          | /draft/{id}/delete                          |   | Lets the creator of a draft delete it |
-| /message/{id}/withdraw                      | /message/{id}/withdraw                      |   | Lets a user withdraw a sent message |
-| /message/{id}/reply                         | /message/{id}/reply                         |   | Lets a recipient reply to a received message |
-| /forwarding/{id}                            | /message/{id}/forwarding                    |   | Lets a user forward a sent or received message |
-| /recipients                                 | /timeline                                   |   | Returns a JSON with all available recipients for the current user |
-| /timeline                                   | /timeline/day/{year}/{month}/{day}/sent     |   | Shows the timeline moth view for the current month |
-| /timeline/day/{year}/{month}/{day}/sent     | /timeline/day/{year}/{month}/{day}/received |   | Shows the timeline day view of sent messages for a specific day |
-| /timeline/day/{year}/{month}/{day}/received | /timeline/month/{year}/{month}              |   | Shows the timeline day view of received messages for a specific day |
-| /timeline/month/{year}/{month}              | /timeline/month/{year}/{month}              |   | Shows the timeline moth view for a specific month |
-| /read_message/{id}                          | /message/{id}/read                          |   | Lets an entitled user to read a specific message |
-| /message/list/sent                          | /message/list/sent                          |   | Shows the list of sent messages |
-| /message/list/received                      | /message/list/received                      |   | Shows the list of received messages |
-| /message/list/draft                         | /message/list/draft                         |   | Shows the list of drafts |
+| ------------------------------------------- | ------------------------------- | :-: | -------- |
+| /draft                                      | /draft                          | m | Creates a new message as draft |
+| /draft/edit/{id}                            | /draft/{id}/edit                | m | Edits a draft |
+| /draft/{id}/delete                          | /draft/{id}/delete              | m | Lets the creator of a draft delete it |
+| /send_message/{id}                          | /message/{id}/send              | m | Sends a message |
+| /message/{id}/delete                        | /message/{id}/delete            | m | Lets a recipient delete a read message |
+| /message/{id}/withdraw                      | /message/{id}/withdraw          | ? | Lets a user withdraw a sent message |
+| /message/{id}/reply                         | /message/{id}/reply             |   | Lets a recipient reply to a received message |
+| /forwarding/{id}                            | /message/{id}/forward           |   | Lets a user forward a sent or received message |
+| /read_message/{id}                          | /message/{id}/read              | y | Lets an entitled user to read a specific message |
+| /message/list/sent                          | /message/list/sent              | y | Shows the list of sent messages |
+| /message/list/received                      | /message/list/received          | m | Shows the list of received messages |
+| /message/list/draft                         | /message/list/draft             | m | Shows the list of drafts |
+| /timeline/day/{year}/{month}/{day}/sent     | /message/list/sent?y=&m=&d=     |   | Shows the timeline day view of sent messages for a specific day |
+| /timeline/day/{year}/{month}/{day}/received | /message/list/received?y=&m=&d= |   | Shows the timeline day view of received messages for a specific day |
+| /timeline                                   | /timeline                       |   | Shows the timeline moth view for the current month |
+| /timeline/month/{year}/{month}              | /timeline?y=&m=                 |   | Shows the timeline moth view for a specific month |
 
 ### Lottery
 | monolith                                    | mmiab               | Status | Description |
