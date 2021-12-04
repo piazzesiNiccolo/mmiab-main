@@ -9,7 +9,7 @@
 
 2. Lottery draw
     - update points to users in user microservice
-    - publishes the event on channel POINTS_UPDATE
+    - publishes the event on channel POINTS_UPDATE, the message format will be '{"users": < list of objects like {"id":points}>}'
     - the user microservice subscribes to this channel and add the points to the winners when a message arrives
 
 3. Message withdraw
