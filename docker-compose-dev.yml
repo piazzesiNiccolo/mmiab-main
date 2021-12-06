@@ -63,7 +63,7 @@ services:
     environment:
       - USERS_MS_HOST=users_ms_worker
       - NOTIFICATIONS_MS_HOST=notifications_ms_worker
-      - LOTTERY_MS_HOST=lottery_ms_worker
+    # - LOTTERY_MS_HOST=lottery_ms_worker
       - MESSAGES_MS_HOST=messages_ms_worker
       - FLASK_ENV=development
     labels:
@@ -110,24 +110,25 @@ services:
     env_file:
       - notifications_ms.conf
     environment:
+      - USERS_MS_HOST=users_ms_worker
       - FLASK_ENV=development
         
   # -------------------------------------------- #
   # Lottery Microservice                    #
   # -------------------------------------------- #
-  lottery_ms_worker:
-     #
-     # Users Microservice Worker node
-     #
-     build: ./mmiab-lottery
-     restart: on-failure
-     volumes:
-       - ./mmiab-lottery:/app 
-     env_file:
-       - lottery_ms.conf
-     environment:
-     # - USERS_MS_HOST=users_ms_worker
-       - FLASK_ENV=development
+  # lottery_ms_worker:
+  #    #
+  #    # Users Microservice Worker node
+  #    #
+  #    build: ./mmiab-lottery
+  #    restart: on-failure
+  #    volumes:
+  #      - ./mmiab-lottery:/app 
+  #    env_file:
+  #      - lottery_ms.conf
+  #    environment:
+  #    # - USERS_MS_HOST=users_ms_worker
+  #      - FLASK_ENV=development
 
   # -------------------------------------------- #
   # Message Microservice                    #
