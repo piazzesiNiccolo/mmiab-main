@@ -15,6 +15,13 @@ version: '3.8'
 
 services:
   
+  redis:
+    image: "redis:alpine"
+    container_name: rd01
+    command: --port 6379
+    ports:
+      - "6379:6379"
+
   # -------------------------------------------- #
   # Starting with API Gateway and Load Balancer  #
   # -------------------------------------------- #
@@ -139,12 +146,41 @@ services:
     #
     build: ./mmiab-message
     restart: on-failure
+    volumes:
+      - ./mmiab-message:/app
+      - ./mmiab-message/mib/static:/static
     env_file:
       - messages_ms.conf
     environment:
+      - REDIS_HOST=rd01
       - USERS_MS_HOST=users_ms_worker
       - NOTIFICATIONS_MS_HOST=notifications_ms_worker
       - FLASK_ENV=development
+
+  celery-messages:
+    depends_on:
+        - redis-celery-messages
+        - messages_ms_worker
+    build: ./mmiab-message
+    restart: always
+    volumes:
+      - ./mmiab-message:/app
+    command: celery -A mib.background worker -B --loglevel=info
+    env_file:
+      - ./mmiab-message/env_file
+    environment:
+      - REDIS_HOST=rd01
+      - CELERY_REDIS_HOST=redis-celery-messages
+      - CELERY_REDIS_PORT=6380
+      - FLASK_ENV=development
+    links:
+        -  redis
+
+  redis-celery-messages:
+    image: "redis:alpine"
+    command: --port 6380
+    ports:
+      - "6380:6380"
 
         
   # Specify here your microservices
