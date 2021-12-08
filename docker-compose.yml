@@ -183,7 +183,7 @@ services:
     restart: on-failure
     command: flask db upgrade
     depends_on:
-      notification_db:
+      notifications_db:
         condition: service_healthy
   notifications_ms_worker:
     #
