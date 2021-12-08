@@ -17,6 +17,7 @@ services:
   
   redis:
     image: "redis:alpine"
+    container_name: rd01
     command: --port 6379
     ports:
       - "6379:6379"
@@ -47,7 +48,7 @@ services:
       - mib.nginx_lb
     volumes:
       - nginx_conf:/etc/nginx/conf.d
-      - ./mmiab-api-gateway/mib/static:/static
+      - static_contents:/static
     ports:
       - "80:80"
 
@@ -62,16 +63,14 @@ services:
     restart: always
     build: ./mmiab-api-gateway
     volumes:
-      - ./mmiab-api-gateway/mib/static:/static
-      - ./mmiab-api-gateway:/app
+      - static_contents:/static
     env_file:
       - gateway.conf
     environment:
       - USERS_MS_HOST=users_ms_worker
       - NOTIFICATIONS_MS_HOST=notifications_ms_worker
       - LOTTERY_MS_HOST=lottery_ms_worker
-      - MESSAGES_MS_HOST=messages_ms_worker
-      - FLASK_ENV=development
+      - MESSAGE_MS_HOST=messages_ms_worker
     labels:
       - mib.api_gateway_worker
 
@@ -88,250 +87,119 @@ services:
   # -------------------------------------------- #
   # Users Microservice                           #
   # -------------------------------------------- #
-  users_db:
-    image: postgres:13
-    restart: unless-stopped
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      # this is only for development purpose
-      - "5342:5342"
+  users_ms_db:
+    #
+    # Users Microservice Database
+    #
+    image: library/postgres:10
+    restart: on-failure
     env_file:
       - users_ms.conf
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  users_ms_migrations:
+    #
+    # Users Microservice Migrations
+    #
+    build: ./mmiab-user
+    env_file:
+      - users_ms.conf
+    environment:
+      - POSTGRES_HOST=users_ms_db
+    restart: on-failure
+    command: flask db upgrade
+    depends_on:
+      users_ms_db:
+        condition: service_healthy
+
   users_ms_worker:
-    
     #
     # Users Microservice Worker node
     #
     build: ./mmiab-user
     restart: on-failure
-    volumes:
-      - ./mmiab-user/mib/static:/static
-      - ./mmiab-user:/app
     env_file:
       - users_ms.conf
     environment:
-      - REDIS_HOST=redis
-      - POSTGRES_HOST=users_db
-    # - FLASK_ENV=development
+      - POSTGRES_HOST=users_ms_db
     depends_on:
-      - users_db
-  users_bg:
-      depends_on:
-        - redis
-        - users_ms_worker
-        - users_db
-      build: ./mmiab-user
-      volumes:
-        - ./mmiab-user:/app
-
-      env_file:
-        - users_ms.conf
-      environment:
-        - POSTGRES_HOST=users_db
-        - REDIS_HOST=redis
-      command: python3 -u subscribers.py
-      links:
-        - redis
+      users_ms_db:
+        condition: service_healthy
+      users_ms_migrations:
+        condition: service_started
+  
   # -------------------------------------------- #
   # Notification Microservice                    #
   # -------------------------------------------- #
-
-  notifications_db:
-    image: postgres:13
-    restart: unless-stopped
-    volumes:
-      - pgdata2:/var/lib/postgresql/data
-    ports:
-      # this is only for development purpose
-      - "5343:5343"
-    env_file:
-      - notifications_ms.conf
   notifications_ms_worker:
     #
-    # Notification Microservice Worker node
+    # Users Microservice Worker node
     #
     build: ./mmiab-notification
     restart: on-failure
-    volumes:
-      - ./mmiab-notification:/app
     env_file:
       - notifications_ms.conf
     environment:
-      - POSTGRES_HOST=notifications_db
-      - POSTGRES_PORT=5343
-      - USERS_MS_HOST=users_ms_worker
       - FLASK_ENV=development
-    depends_on:
-      - notifications_db
-  notification_bg:
-    depends_on:
-      - redis
-      - notification_ms_worker
-      - users_db
-    build: ./mmiab-notification
-    env_file:
-      - notifications_ms.conf
-    environment:
-      - POSTGRES_HOST=notifications_db
-      - POSTGRES_PORT=5343
-      - REDIS_HOST=redis
-    command: python3 -u subscribers.py
-    links:
-      - redis
-    
+
   # -------------------------------------------- #
   # Lottery Microservice                    #
   # -------------------------------------------- #
-  lottery_db:
-    image: postgres:13
-    restart: unless-stopped
-    volumes:
-      - pgdata3:/var/lib/postgresql/data
-    ports:
-      # this is only for development purpose
-      - "5344:5344"
-    env_file:
-      - lottery_ms.conf
   lottery_ms_worker:
      #
      # Users Microservice Worker node
      #
-    build: ./mmiab-lottery
-    restart: on-failure
-    volumes:
-      - ./mmiab-lottery:/app 
-    env_file:
-      - lottery_ms.conf
-    environment:
-      - REDIS_HOST=redis
-      - POSTGRES_HOST=lottery_db
-      - POSTGRES_PORT=5344
-      - FLASK_ENV=development
-    depends_on: 
-      - lottery_db
-  lottery_bg:
-    depends_on:
-      - redis
-      - lottery_ms_worker
-      - lottery_db
-    build: ./mmiab-lottery
-    env_file:
-      - lottery_ms.conf
-    environment:
-      - POSTGRES_HOST=lottery_db
-      - POSTGRES_PORT=5344
-      - REDIS_HOST=redis
-    command: python3 -u subscribers.py
-    links:
-      - redis
-  celery-lottery:
-    depends_on:
-        - redis
-        - redis-celery-lottery
-        - lottery_ms_worker
-        - lottery_db
-    build: ./mmiab-lottery
-    restart: always
-    volumes:
-      - ./mmiab-lottery:/app
-    command: celery -A mib.background worker -B --loglevel=info
-    env_file:
-      - lottery_ms.conf
-    environment:
-      - REDIS_HOST=redis
-      - POSTGRES_HOST=lottery_db
-      - POSTGRES_PORT=5344
-      - CELERY_REDIS_HOST=redis-celery-lottery
-      - CELERY_REDIS_PORT=6380
-      - FLASK_ENV=development
-    links:
-        -  redis
-
-  redis-celery-lottery:
-    image: "redis:alpine"
-    command: --port 6380
-    ports:
-      - "6380:6380"
+     build: ./mmiab-lottery
+     restart: on-failure
+     env_file:
+       - lottery_ms.conf
+     environment:
+     # - USERS_MS_HOST=users_ms_worker
+       - FLASK_ENV=development
 
   # -------------------------------------------- #
   # Message Microservice                    #
   # -------------------------------------------- #
-  messages_db:
-    image: postgres:13
-    restart: unless-stopped
-    volumes:
-      - pgdata4:/var/lib/postgresql/data
-    ports:
-      # this is only for development purpose
-      - "5345:5345"
-    env_file:
-      - messages_ms.conf
-   
-    
   messages_ms_worker:
     #
     # Users Microservice Worker node
     #
     build: ./mmiab-message
     restart: on-failure
-    volumes:
-      - ./mmiab-message:/app
-      - ./mmiab-message/mib/static:/static
     env_file:
       - messages_ms.conf
     environment:
-      - REDIS_HOST=redis
-      - POSTGRES_HOST=messages_db
-      - POSTGRES_PORT=5345
       - USERS_MS_HOST=users_ms_worker
       - NOTIFICATIONS_MS_HOST=notifications_ms_worker
       - FLASK_ENV=development
-  messages_bg:
-    depends_on:
-      - redis
-      - messages_ms_worker
-      - messages_db
-    build: ./mmiab-message
-    env_file:
-      - messages_ms.conf
-    environment:
-      - POSTGRES_HOST=messages_db
-      - POSTGRES_PORT=5345
-      - REDIS_HOST=redis
-    command: python3 -u subscribers.py
-    links:
-      - redis
+
   celery-messages:
     depends_on:
-        - redis 
-        - messages_db
         - redis-celery-messages
         - messages_ms_worker
     build: ./mmiab-message
     restart: always
-    volumes:
-      - ./mmiab-message:/app
     command: celery -A mib.background worker -B --loglevel=info
     env_file:
-      - messages_ms.conf
+      - ./mmiab-message/env_file
     environment:
       - REDIS_HOST=redis
-      - POSTGRES_HOST=messages_db
-      - POSTGRES_PORT=5345
       - CELERY_REDIS_HOST=redis-celery-messages
-      - CELERY_REDIS_PORT=6381
-      - FLASK_ENV=development
+      - CELERY_REDIS_PORT=6380
     links:
         -  redis
 
   redis-celery-messages:
     image: "redis:alpine"
-    command: --port 6381
+    command: --port 6380
     ports:
-      - "6381:6381"
+      - "6380:6380"
 
-        
+  #
   # Specify here your microservices
   # separating services by: db_service, migration_service, worker_service
   #
@@ -340,10 +208,6 @@ volumes:
   # -------------------------------------------- #
   # Volumes                                      #
   # -------------------------------------------- #
-  pgdata:
-  pgdata2:
-  pgdata3:
-  pgdata4:
 
   nginx_conf:
   # Nginx configuration volume
