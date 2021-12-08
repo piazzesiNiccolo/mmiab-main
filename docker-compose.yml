@@ -137,6 +137,7 @@ services:
     # - FLASK_ENV=development
     depends_on:
       - users_db
+
   users_bg:
       depends_on:
         - redis
@@ -158,49 +159,49 @@ services:
   # Notification Microservice                    #
   # -------------------------------------------- #
 
-          # notifications_db:
-          #   image: postgres:13
-          #   restart: unless-stopped
-          #   volumes:
-          #     - pgdata2:/var/lib/postgresql/data
-          #   ports:
-          #     # this is only for development purpose
-          #     - "5343:5343"
-          #   env_file:
-          #     - notifications_ms.conf
-          # notifications_ms_worker:
-          #   #
-          #   # Notification Microservice Worker node
-          #   #
-          #   build: ./mmiab-notification
-          #   restart: on-failure
-          #   volumes:
-          #     - ./mmiab-notification:/app
-          #   env_file:
-          #     - notifications_ms.conf
-          #   environment:
-          #     - POSTGRES_HOST=notifications_db
-          #     - POSTGRES_PORT=5343
-          #     - USERS_MS_HOST=users_ms_worker
-          #   # - FLASK_ENV=development
-          #   depends_on:
-          #     - notifications_db
-          # notification_bg:
-          #   depends_on:
-          #     - redis
-          #     - notification_ms_worker
-          #     - users_db
-          #   build: ./mmiab-notification
-          #   env_file:
-          #     - notifications_ms.conf
-          #   environment:
-          #     - POSTGRES_HOST=notifications_db
-          #     - POSTGRES_PORT=5343
-          #     - REDIS_HOST=redis
-          #   command: python3 -u subscribers.py
-          #   links:
-          #     - redis
-          #   
+  notifications_db:
+    image: postgres:13
+    restart: unless-stopped
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+  # ports:
+  #   # this is only for development purpose
+  #   - "5343:5343"
+    env_file:
+      - notifications_ms.conf
+  notifications_ms_worker:
+    #
+    # Notification Microservice Worker node
+    #
+    build: ./mmiab-notification
+    restart: on-failure
+    volumes:
+      - ./mmiab-notification:/app
+    env_file:
+      - notifications_ms.conf
+    environment:
+      - POSTGRES_HOST=notifications_db
+    # - POSTGRES_PORT=5343
+      - USERS_MS_HOST=users_ms_worker
+    # - FLASK_ENV=development
+    depends_on:
+      - notifications_db
+  notification_bg:
+    depends_on:
+      - redis
+      - notification_ms_worker
+      - users_db
+    build: ./mmiab-notification
+    env_file:
+      - notifications_ms.conf
+    environment:
+      - POSTGRES_HOST=notifications_db
+    # - POSTGRES_PORT=5343
+      - REDIS_HOST=redis
+    command: python3 -u subscribers.py
+    links:
+      - redis
+            
           # # -------------------------------------------- #
           # # Lottery Microservice                    #
           # # -------------------------------------------- #
