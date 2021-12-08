@@ -179,7 +179,7 @@ services:
     env_file:
       - notifications_ms.conf
     environment:
-      - POSTGRES_HOST=notification_db
+      - POSTGRES_HOST=notifications_db
     restart: on-failure
     command: flask db upgrade
     depends_on:
@@ -206,8 +206,8 @@ services:
   notification_bg:
     depends_on:
       - redis
-      - notification_ms_worker
-      - notification_db
+      - notifications_ms_worker
+      - notifications_db
     build: ./mmiab-notification
     env_file:
       - notifications_ms.conf
@@ -286,6 +286,8 @@ services:
         - redis-celery-lottery
         - lottery_ms_worker
         - lottery_db
+        - lottery_ms_migrations
+        
     build: ./mmiab-lottery
     restart: always
     volumes:
