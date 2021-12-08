@@ -91,8 +91,6 @@ services:
   users_db:
     image: postgres:13
     restart: unless-stopped
-    volumes:
-      - pgdata:/var/lib/postgresql/data
         # ports:
         #   # this is only for development purpose
         #   - "5342:5342"
@@ -134,7 +132,9 @@ services:
       - POSTGRES_HOST=users_db
     # - FLASK_ENV=development
     depends_on:
-      - users_db
+        users_db:
+          condition: service_healthy
+    
 
   users_bg:
       depends_on:
@@ -160,13 +160,31 @@ services:
   notifications_db:
     image: postgres:13
     restart: unless-stopped
-    volumes:
-      - pgdata2:/var/lib/postgresql/data
   # ports:
   #   # this is only for development purpose
   #   - "5343:5343"
     env_file:
       - notifications_ms.conf
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  notification_ms_migrations:
+    #
+    # Users Microservice Migrations
+    #
+    build: ./mmiab-notification
+    env_file:
+      - notifications_ms.conf
+    environment:
+      - POSTGRES_HOST=notifications_db
+    restart: on-failure
+    command: flask db upgrade
+    depends_on:
+      notification_db:
+        condition: service_healthy
   notifications_ms_worker:
     #
     # Notification Microservice Worker node
@@ -183,12 +201,13 @@ services:
       - USERS_MS_HOST=users_ms_worker
     # - FLASK_ENV=development
     depends_on:
-      - notifications_db
+      notifications_db:
+        condition: service_healthy
   notification_bg:
     depends_on:
       - redis
-      - notification_ms_worker
-      - users_db
+      - notifications_ms_worker
+      - notifications_db
     build: ./mmiab-notification
     env_file:
       - notifications_ms.conf
@@ -206,13 +225,30 @@ services:
   lottery_db:
     image: postgres:13
     restart: unless-stopped
-    volumes:
-     - pgdata3:/var/lib/postgresql/data
 #   ports:
 #     # this is only for development purpose
 #     - "5344:5344"
     env_file:
       - lottery_ms.conf
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  lottery_ms_migrations:
+    #
+    # Users Microservice Migrations
+    #
+    build: ./mmiab-lottery
+    env_file:
+      - lottery_ms.conf
+    environment:
+      - POSTGRES_HOST=lottery_db
+    restart: on-failure
+    command: flask db upgrade
+    depends_on:
+      lottery_db:
+        condition: service_healthy
   lottery_ms_worker:
      #
      # Users Microservice Worker node
@@ -228,6 +264,7 @@ services:
       - POSTGRES_HOST=lottery_db
     # - FLASK_ENV=development
     depends_on: 
+      - lottery_ms_migrations
       - lottery_db
   lottery_bg:
     depends_on:
@@ -249,6 +286,8 @@ services:
         - redis-celery-lottery
         - lottery_ms_worker
         - lottery_db
+        - lottery_ms_migrations
+        
     build: ./mmiab-lottery
     restart: always
     volumes:
@@ -277,14 +316,31 @@ services:
   messages_db:
     image: postgres:13
     restart: unless-stopped
-    volumes:
-      - pgdata4:/var/lib/postgresql/data
 #   ports:
 #     # this is only for development purpose
 #     - "5345:5345"
     env_file:
      - messages_ms.conf
-  
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  messages_ms_migrations:
+    #
+    # Users Microservice Migrations
+    #
+    build: ./mmiab-message
+    env_file:
+      - messages_ms.conf
+    environment:
+      - POSTGRES_HOST=messages_db
+    restart: on-failure
+    command: flask db upgrade
+    depends_on:
+      messages_db:
+        condition: service_healthy
    
   messages_ms_worker:
    #
@@ -323,6 +379,8 @@ services:
        - messages_db
        - redis-celery-messages
        - messages_ms_worker
+       - messages_ms_migrations
+
    build: ./mmiab-message
    restart: always
    volumes:
@@ -351,10 +409,7 @@ volumes:
   # -------------------------------------------- #
   # Volumes                                      #
   # -------------------------------------------- #
-  pgdata:
-  pgdata2:
-  pgdata3:
-  pgdata4:
+
 
   nginx_conf:
   # Nginx configuration volume
