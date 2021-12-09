@@ -1,15 +1,15 @@
 [submodule "mmiab-api-gateway"]
 	path = mmiab-api-gateway
-	url = git@github.com:Team6ASE2021/mmiab-api-gateway.git
+	url = git@github.com:piazzesiNiccolo/mmiab-api-gateway.git
 [submodule "mmiab-user"]
 	path = mmiab-user
-	url = git@github.com:Team6ASE2021/mmiab-user.git
+	url = git@github.com:piazzesiNiccolo/mmiab-user.git
 [submodule "mmiab-notification"]
 	path = mmiab-notification
-	url = git@github.com:Team6ASE2021/mmiab-notification.git
+	url = git@github.com:piazzesiNiccolo/mmiab-notification.git
 [submodule "mmiab-lottery"]
 	path = mmiab-lottery
-	url = git@github.com:Team6ASE2021/mmiab-lottery.git
+	url = git@github.com:piazzesiNiccolo/mmiab-lottery.git
 [submodule "mmiab-message"]
 	path = mmiab-message
-	url = git@github.com:Team6ASE2021/mmiab-message.git
+	url = git@github.com:piazzesiNiccolo/mmiab-message.git
