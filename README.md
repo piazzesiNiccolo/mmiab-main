@@ -11,10 +11,10 @@ This is the main repository of Message in a Bottle application, self project of 
 
 | Name and Surname | Email |
 | ---------------- | ----- |
-| Lorenzo Volpi    |       |
-| Niccolò Piazzesi |       |
-| Davide Morucci   |       |
-| Paolo Lanza      |       |
+| Lorenzo Volpi    | l.volpi7@studenti.unipi.it      |
+| Niccolò Piazzesi | n.piazzesi@studenti.unipi.it      |
+| Davide Morucci   | d.morucci@studenti.unipi.it      |
+| Paolo Lanza      | p.lanza1@studenti.unipi.it     |
 |                  |       |
 
 ## Instructions
@@ -24,7 +24,7 @@ This is the main repository of Message in a Bottle application, self project of 
 To clone the repository you have to specify the recursive parameter,
 in this way:
 
-`git clone --recursive git@github.com:<team_leader_username>/<main-project>.git`
+`git clone --recursive git@github.com:piazzesiNiccolo/mmiab-main.git`
 
 All the submodules will be fetched from GitHub and they will be
 placed inside the project root.
